@@ -1,0 +1,109 @@
+ <html>
+
+ <head>
+     <script>
+         function store() {
+             var inputName = document.getElementById("username");
+             localStorage.setItem("username", inputName.value);
+             var inputPass = document.getElementById("psw");
+             localStorage.setItem("psw", inputPass.value);
+             var chosengender = document.querySelectorAll('input[type="checkbox"]:checked')[0];
+             localStorage.setItem("check", chosengender.value);
+         }
+         //function to change color of name requirments text if matched
+         function checkname() {
+             if (document.getElementById('username').pattern.value = true) {
+                 document.getElementById('nameKeyup').style.color = 'green';
+             }
+         }
+         //function to check if the passoword is matched
+         function checkpass() {
+
+             if (document.getElementById('psw').value ==
+                 document.getElementById('psw-confirm').value) {
+                 document.getElementById('message').style.color = 'green';
+                 document.getElementById('message').innerHTML = '*Passowrds Matched ';
+             } else {
+                 document.getElementById('message').style.color = 'red';
+                 document.getElementById('message').innerHTML = '*Passwords must match.';
+             }
+             if (document.getElementById('psw').pattern.Value = true) {
+                 document.getElementById('passkeyup').style.color = 'green';
+             }
+         }
+         //function to disable the submit button if the password is not matched
+         function check_pass() {
+             if (document.getElementById('psw').value ==
+                 document.getElementById('psw-confirm').value) {
+                 document.getElementById('submit').enabled = true;
+                 document.getElementById('passkeyup').style.color = 'green';
+
+             } else {
+                 document.getElementById('submit').enabled = false;
+
+             }
+         }
+         //function of cancel button
+         function goBack() {
+             window.history.back();
+         }
+         //function to only choose one gendre
+         function onlyOne(checkbox) {
+             var checkboxes = document.getElementsByName('check');
+             var test1 = document.getElementById('mal');
+             var test2 = document.getElementById('fem');
+             checkboxes.forEach((item) => {
+                 if (item !== checkbox) {
+                     item.checked = false;
+                     item.required = false;
+                 }
+             })
+
+         }
+
+     </script>
+     <link href="RegisterartinStyle.css" rel="stylesheet">
+ </head>
+
+ <body>
+     <form method="get" action="LoginForm.html">
+         <div class="container">
+             <h1>Registeration Form</h1>
+
+             <hr>
+             <label for="username"><b>User Name</b>
+                 <input type="text" placeholder="Enter your name" name="username" id="username" onkeyup="checkname()" pattern="[a-zA-Z0-9]+" required>
+                 <div class="nameRequirements" id="nameKeyup">
+                     *letters and numbers only, no punctuation or special characters.</div>
+             </label>
+             <label for="psw"><b>User Password</b>
+                 <input type="password" placeholder="Enter Password" name="psw" id="psw" onkeyup=" checkpass();" onchange="check_pass();" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" required>
+                 <div class="passRequirements" id="passkeyup">
+                     *Your password must be at least 6 characters as well as contain at least one uppercase, one lowercase, and one number.</div>
+             </label>
+             <label for="psw-confirm"><b>Password Confirmation</b>
+                 <input type="password" placeholder="Cofirm Password" name="psw-confirm" id="psw-confirm" onkeyup="checkpass();" onchange="check_pass();" required>
+                 <div id='message'></div>
+             </label>
+             <br>
+             <label for="email"><b>Email</b>
+                 <input type="email" placeholder="Enter Email" name="email" id="email" required></label>
+             <div class="gndr"> <label for="gender"><b>Gender</b>
+
+                     <label for="male"><input type="checkbox" name="check" id="mal" value="male" onclick="onlyOne(this)" required>
+                         <b>Male</b></label>
+                     <label for="female"><input type="checkbox" name="check" id="fem" value="female" onclick="onlyOne(this)" required>
+                         <b>Female</b></label></label>
+             </div>
+             <br>
+             <button type="submit" class="btn" value="submit" id="submit" onclick="store()" enabled><b>OK</b></button>
+             <button type="button" class="btn" onclick="goBack();"><b>Cancel</b></button>
+             <p id="submitText"></p>
+
+         </div>
+
+     </form>
+
+ </body>
+
+ </html>

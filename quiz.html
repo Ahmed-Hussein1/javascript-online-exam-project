@@ -1,0 +1,262 @@
+<html>
+
+<head>
+    <script>
+        var userdata = location.href.substring(location.href.indexOf("?") + 1);
+        var userdataarray = userdata.split("&");
+        // loop over array
+        var currentiteratedpairs = userdataarray[0].split("=");
+        document.write("<div><h2>Welcome" + " " + currentiteratedpairs[1] + "</h2></div>");
+
+    </script>
+    <link href="quiz.css" rel="stylesheet">
+</head>
+
+<body onload="countdown('countdown')">
+    <div>
+        <div id='countdown'></div>
+        <h1>Javascript</h1>
+    </div>
+    <div class="quiz-container">
+        <div id="quiz"></div>
+    </div>
+
+    <button id="next">Next Question</button>
+    <button id="submit">Finish Quiz</button>
+    <div id="results"></div>
+    <script>
+        var cdtime;
+        var minutes = 30;
+        var seconds = 0;
+
+        function countdown(element) {
+            cdtime = setInterval(function() {
+                var timer = document.getElementById(element);
+                if (seconds == 0) {
+                    if (minutes == 0) {
+                        alert(timer.innerHTML = "Time is over!");
+                        clearInterval(cdtime);
+                        return;
+                    } else {
+                        minutes--;
+                        seconds = 60;
+                    }
+                }
+
+                timer.innerHTML = "Time left" + " " + minutes + ":" + seconds;
+                seconds--;
+            }, 1000);
+        }
+
+
+
+        (function() {
+
+            function buildQuiz() {
+
+                var output = [];
+
+
+                myQuestions.forEach(
+                    (currentQuestion, questionNumber) => {
+
+
+                        var answers = [];
+
+
+                        for (letter in currentQuestion.answers) {
+
+
+                            answers.push(
+                                `<label>
+              <input type="radio" name="question${questionNumber}" value="${letter}">
+              ${letter} :
+              ${currentQuestion.answers[letter]}
+            </label>`
+                            );
+                        }
+
+
+                        output.push(
+                            `<div class="slide">
+            <div class="question"> ${currentQuestion.question} </div>
+            <div class="answers"> ${answers.join("")} </div>
+          </div>`
+                        );
+                    }
+                );
+
+
+                quizContainer.innerHTML = output.join('');
+            }
+
+            function showResults() {
+
+
+                var answerContainers = quizContainer.querySelectorAll('.answers');
+
+
+                var numCorrect = 0;
+
+
+                myQuestions.forEach((currentQuestion, questionNumber) => {
+
+
+                    var answerContainer = answerContainers[questionNumber];
+                    var selector = `input[name=question${questionNumber}]:checked`;
+                    var userAnswer = (answerContainer.querySelector(selector) || {}).value;
+
+
+                    if (userAnswer === currentQuestion.correctAnswer) {
+
+                        numCorrect++;
+
+
+                        answerContainers[questionNumber].style.color = 'lightgreen';
+                    } else {
+
+                        answerContainers[questionNumber].style.color = 'red';
+                    }
+                });
+
+
+                resultsContainer.innerHTML = `${numCorrect} out of ${myQuestions.length}`;
+            }
+
+            function showSlide(n) {
+                slides[currentSlide].classList.remove('active-slide');
+                slides[n].classList.add('active-slide');
+                currentSlide = n;
+
+                if (currentSlide === slides.length - 1) {
+                    nextButton.style.display = 'none';
+                    submitButton.style.display = 'inline-block';
+                } else {
+                    nextButton.style.display = 'inline-block';
+                    submitButton.style.display = 'none';
+                }
+            }
+
+            function showNextSlide() {
+                showSlide(currentSlide + 1);
+            }
+
+
+            var quizContainer = document.getElementById('quiz');
+            var resultsContainer = document.getElementById('results');
+            var submitButton = document.getElementById('submit');
+            var myQuestions = [{
+                    question: "what is 1+1?",
+                    answers: {
+                        a: "2",
+                        b: "5",
+                        c: "1",
+                        d: "6"
+                    },
+                    correctAnswer: "a"
+                },
+                {
+                    question: "what is 2*2",
+                    answers: {
+                        a: "8",
+                        b: "5",
+                        c: "4",
+                        d: "6"
+                    },
+                    correctAnswer: "c"
+                },
+                {
+                    question: "what is 2*3?",
+                    answers: {
+                        a: "8",
+                        b: "4",
+                        c: "7",
+                        d: "6"
+                    },
+                    correctAnswer: "d"
+                },
+                {
+                    question: "what is 2*4",
+                    answers: {
+                        a: "8",
+                        b: "5",
+                        c: "4",
+                        d: "6"
+                    },
+                    correctAnswer: "a"
+                },
+                {
+                    question: "what is 2*2",
+                    answers: {
+                        a: "8",
+                        b: "5",
+                        c: "4",
+                        d: "6"
+                    },
+                    correctAnswer: "c"
+                },
+                {
+                    question: "what is 2*9",
+                    answers: {
+                        a: "8",
+                        b: "5",
+                        c: "4",
+                        d: "18"
+                    },
+                    correctAnswer: "d"
+                },
+                {
+                    question: "what is 7*2",
+                    answers: {
+                        a: "8",
+                        b: "14",
+                        c: "4",
+                        d: "6"
+                    },
+                    correctAnswer: "b"
+                },
+                {
+                    question: "what is 2*5",
+                    answers: {
+                        a: "8",
+                        b: "5",
+                        c: "4",
+                        d: "10"
+                    },
+                    correctAnswer: "d"
+                },
+                {
+                    question: "what is 2*8",
+                    answers: {
+                        a: "8",
+                        b: "5",
+                        c: "16",
+                        d: "6"
+                    },
+                    correctAnswer: "c"
+                },
+                {
+                    question: "what is 3*2",
+                    answers: {
+                        a: "8",
+                        b: "5",
+                        c: "6",
+                        d: "6"
+                    },
+                    correctAnswer: "c"
+                }
+            ];
+
+            buildQuiz();
+            var nextButton = document.getElementById("next");
+            var slides = document.querySelectorAll(".slide");
+            var currentSlide = 0;
+            showSlide(currentSlide);
+            submitButton.addEventListener('click', showResults);
+            nextButton.addEventListener("click", showNextSlide);
+        })();
+
+    </script>
+</body>
+
+</html>
